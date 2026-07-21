@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dear Mimi 💌</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Alex+Brush&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #08070a;
+            color: #3a2a17;
+            font-family: 'EB Garamond', serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === PARTÍCULAS === */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        /* === INTRO === */
+        #intro {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at 50% 60%, rgba(255, 181, 77, 0.08), transparent 60%),
+                        linear-gradient(180deg, #0f0c10, #08070a);
+            z-index: 20;
+            transition: opacity 1.5s ease;
+        }
+
+        #intro.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* === VELA === */
+        .candle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: fadeUp 2s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .flame {
+            width: 16px;
+            height: 38px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: radial-gradient(circle at 50% 70%, #fff5d0, #ffb54d 40%, #b5521c 80%, transparent);
+            filter: drop-shadow(0 0 15px #ffb54d) drop-shadow(0 0 30px rgba(255, 181, 77, 0.3));
+            animation: flicker 2.5s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scaleY(1) rotate(-1deg); }
+            25% { transform: scaleY(1.08) rotate(2deg); }
+            50% { transform: scaleY(0.92) rotate(-2deg); }
+            75% { transform: scaleY(1.05) rotate(1deg); }
+            100% { transform: scaleY(1) rotate(0deg); }
+        }
+
+        .wick {
+            width: 2px;
+            height: 8px;
+            background: #2a1e12;
+            margin: 0 auto;
+        }
+
+        .candle-body {
+            width: 28px;
+            height: 80px;
+            background: linear-gradient(90deg, #efe3c2, #fbf6e6 40%, #e6d7ab 70%, #d8c894);
+            border-radius: 4px 4px 8px 8px;
+            box-shadow: inset -3px 0 10px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .candle-body::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 5px;
+            width: 4px;
+            height: 55%;
+            background: rgba(255,255,255,0.4);
+            border-radius: 2px;
+            filter: blur(1px);
+        }
+
+        /* === SOBRE === */
+        .envelope-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeUp 2.2s ease 0.8s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .envelope {
+            position: relative;
+            width: min(80vw, 350px);
+            aspect-ratio: 3/2;
+            cursor: pointer;
+            transition: transform 0.6s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.02);
+        }
+
+        .envelope-back {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(170deg, #efe3c2, #d9c493);
+            border: 2px solid #c8a24a;
+            border-radius: 4px;
+            box-shadow: inset 0 0 30px rgba(74, 60, 34, 0.2), 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .envelope-back::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: 
+                linear-gradient(135deg, transparent 47%, rgba(74,60,34,0.12) 50%, transparent 53%),
+                linear-gradient(45deg, transparent 47%, rgba(74,60,34,0.12) 50%, transparent 53%);
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 62%;
+            background: linear-gradient(160deg, #e6d7ab, #cdb87f);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            border-radius: 4px 4px 0 0;
+            transform-origin: top center;
+            transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        /* === SELLO === */
+        .seal {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #8fd4e8, #4a0c1e 70%);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.5s ease;
+            border: 2px solid rgba(0,0,0,0.2);
+        }
+
+        .seal:hover {
+            transform: translate(-50%, -50%) scale(1.08);
+        }
+
+        .seal:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .seal-broken {
+            animation: sealBreak 0.7s ease forwards;
+        }
+
+        @keyframes sealBreak {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            40% { transform: translate(-50%, -50%) scale(1.2); }
+            100% { transform: translate(-50%, -50%) scale(0) rotate(20deg); opacity: 0; }
+        }
+
+        .seal-text {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 20px;
+            color: rgba(255, 240, 225, 0.95);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+
+        /* === HINT === */
+        .hint {
+            margin-top: 25px;
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-size: 13px;
+            color: #e7cf94;
+            opacity: 0.7;
+            animation: pulse 2.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+        }
+
+        .hint.hidden {
+            opacity: 0;
+            animation: none;
+        }
+
+        /* === BOTÓN === */
+        .btn {
+            margin-top: 20px;
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 13px;
+            color: #e7cf94;
+            background: transparent;
+            border: 1.5px solid rgba(231, 207, 148, 0.5);
+            border-radius: 50px;
+            padding: 12px 35px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .btn.show {
+            opacity: 0.9;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .btn:hover {
+            background: rgba(231, 207, 148, 0.1);
+            border-color: #e7cf94;
+        }
+
+        /* === CARTA - ESTILO VICTORIANO === */
+        #letter {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: none;
+            justify-content: center;
+            padding: 80px 20px 100px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255, 181, 77, 0.06), transparent 60%),
+                        linear-gradient(180deg, #0f0c10, #08070a);
+        }
+
+        #letter.show {
+            display: flex;
+        }
+
+        .paper {
+            position: relative;
+            width: min(750px, 95vw);
+            background: linear-gradient(160deg, #f5efe0, #e8dcc8, #dccdb5);
+            border: 3px double #b8963e;
+            border-radius: 3px;
+            padding: 60px 50px 80px;
+            box-shadow: 
+                0 30px 70px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(184, 150, 62, 0.3),
+                inset 0 0 60px rgba(74, 60, 34, 0.15);
+            animation: paperRise 1.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        @keyframes paperRise {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === Decoraciones Victorianas === */
+        .paper::before {
+            content: '✦ ✧ ✦ ✧ ✦';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            letter-spacing: 8px;
+            color: #b8963e;
+            opacity: 0.4;
+            font-family: 'Tangerine', cursive;
+        }
+
+        .paper::after {
+            content: '✦ ✧ ✦ ✧ ✦';
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            letter-spacing: 8px;
+            color: #b8963e;
+            opacity: 0.4;
+            font-family: 'Tangerine', cursive;
+        }
+
+        /* Marco decorativo interior */
+        .paper .border-decoration {
+            position: absolute;
+            inset: 20px;
+            border: 1px solid rgba(184, 150, 62, 0.2);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        .paper .border-decoration::before {
+            content: '✧';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: #b8963e;
+            opacity: 0.3;
+            background: #e8dcc8;
+            padding: 0 10px;
+        }
+
+        .paper .border-decoration::after {
+            content: '✧';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            color: #b8963e;
+            opacity: 0.3;
+            background: #e8dcc8;
+            padding: 0 10px;
+        }
+
+        /* Esquinas decorativas */
+        .corner {
+            position: absolute;
+            font-family: 'Tangerine', cursive;
+            font-size: 28px;
+            color: #b8963e;
+            opacity: 0.3;
+        }
+
+        .corner-tl { top: 12px; left: 18px; }
+        .corner-tr { top: 12px; right: 18px; }
+        .corner-bl { bottom: 12px; left: 18px; }
+        .corner-br { bottom: 12px; right: 18px; }
+
+        /* === CONTENIDO DE LA CARTA === */
+        .letter-content {
+            position: relative;
+            transition: opacity 1.5s ease, filter 1.5s ease;
+        }
+
+        .letter-content.faded {
+            opacity: 0;
+            filter: blur(5px);
+        }
+
+        .salutation {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(26px, 5vw, 36px);
+            text-align: center;
+            margin-bottom: 30px;
+            color: #3a2a17;
+        }
+
+        .letter-content p {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(17px, 2.4vw, 20px);
+            line-height: 1.9;
+            margin-bottom: 22px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.9s ease, transform 0.9s ease;
+        }
+
+        .letter-content p.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter-content p:first-of-type::first-letter {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: 2.8em;
+            float: left;
+            line-height: 0.7;
+            padding: 8px 10px 0 0;
+            color: #7c1330;
+        }
+
+        .letter-content em {
+            font-style: italic;
+        }
+
+        .letter-content strong {
+            font-weight: 600;
+            color: #5a2a1a;
+        }
+
+        /* === BOTÓN CONTINUE - ESTILO CERA === */
+        .btn-wax {
+            font-family: 'EB Garamond', serif;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 14px;
+            color: #f5efe0;
+            background: linear-gradient(145deg, #7c1330, #4a0c1e);
+            border: 2px solid #b8963e;
+            border-radius: 50px;
+            padding: 14px 40px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(124, 19, 48, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .btn-wax::before {
+            content: '◆';
+            margin-right: 10px;
+            font-size: 10px;
+            color: #b8963e;
+        }
+
+        .btn-wax::after {
+            content: '◆';
+            margin-left: 10px;
+            font-size: 10px;
+            color: #b8963e;
+        }
+
+        .btn-wax.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .btn-wax:hover {
+            box-shadow: 0 6px 25px rgba(124, 19, 48, 0.6), inset 0 1px 0 rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .btn-wax:active {
+            transform: translateY(0) scale(0.97);
+            box-shadow: 0 2px 10px rgba(124, 19, 48, 0.4);
+        }
+
+        .btn-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            height: 70px;
+        }
+
+        /* === FINAL - Fondo más oscuro === */
+        #final {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 35px;
+            z-index: 30;
+            padding: 0 20px;
+            background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.85), #000000 95%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 2s ease;
+        }
+
+        #final.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #final p {
+            font-family: 'Tangerine', cursive;
+            font-size: clamp(40px, 8vw, 65px);
+            color: #f5efe0;
+            text-align: center;
+            text-shadow: 0 0 40px rgba(255, 181, 77, 0.15);
+            line-height: 1.3;
+        }
+
+        #final .sub-phrase {
+            font-size: 0.6em;
+            opacity: 0.7;
+            display: block;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        #final .btn-wax {
+            opacity: 0;
+            transition: opacity 1s ease 1.2s, transform 0.8s ease;
+            transform: translateY(10px);
+        }
+
+        #final .btn-wax.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        @media (max-width: 480px) {
+            .paper { padding: 50px 25px 70px; }
+            .paper::before,
+            .paper::after {
+                font-size: 10px;
+                letter-spacing: 4px;
+            }
+            .corner { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles"></canvas>
+
+    <!-- ===== INTRO ===== -->
+    <div id="intro">
+        <div class="candle">
+            <div class="flame"></div>
+            <div class="wick"></div>
+            <div class="candle-body"></div>
+        </div>
+
+        <div class="envelope-wrap">
+            <div class="envelope" id="envelope">
+                <div class="envelope-back"></div>
+                <div class="envelope-flap"></div>
+                <div class="seal" id="seal">
+                    <span class="seal-text">E · C</span>
+                </div>
+            </div>
+            <p class="hint" id="hint">💫 Click the wax seal</p>
+            <button class="btn" id="btn-read">📖 Read the letter</button>
+        </div>
+    </div>
+
+    <!-- ===== LETTER ===== -->
+    <div id="letter">
+        <div class="paper">
+            <!-- Decoraciones Victorianas -->
+            <span class="corner corner-tl">❧</span>
+            <span class="corner corner-tr">❧</span>
+            <span class="corner corner-bl">❧</span>
+            <span class="corner corner-br">❧</span>
+            <div class="border-decoration"></div>
+
+            <div class="letter-content" id="content">
+                <h1 class="salutation">Dear Mimi.</h1>
+            </div>
+
+            <div class="btn-wrap">
+                <button class="btn-wax" id="btn-end">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FINAL ===== -->
+    <div id="final">
+        <p>
+            “Some people deserve to be written and loved in ink.”
+            <span class="sub-phrase">and i found mine</span>
+        </p>
+        <button class="btn-wax" id="btn-back">Back to letter</button>
+    </div>
+
+    <audio id="music" src="music.mp3" loop preload="auto"></audio>
+
+    <script>
+        // ================================================================
+        // 1. PARTÍCULAS
+        // ================================================================
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let w, h;
+        const particles = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: Math.random() * 1.8 + 0.5,
+                speed: Math.random() * 0.25 + 0.05,
+                drift: (Math.random() - 0.5) * 0.15,
+                alpha: Math.random() * 0.4 + 0.15,
+                phase: Math.random() * Math.PI * 2
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            for (const p of particles) {
+                p.phase += 0.01;
+                const flick = (Math.sin(p.phase) + 1) / 2;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 200, 140, ${p.alpha * flick})`;
+                ctx.fill();
+                p.y -= p.speed;
+                p.x += p.drift;
+                if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; }
+                if (p.x < -5) p.x = w + 5;
+                if (p.x > w + 5) p.x = -5;
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+
+        // ================================================================
+        // 2. TEXTO DE LA CARTA CON ESTILOS (cursivas y negritas)
+        // ================================================================
+        const paragraphs = [
+            "Lets see... I don't really know how to say this, but I guess <em>honest things</em> are never perfectly organized.",
+            "You caught my attention from the very first moment we talked. And maybe it'll sound exaggerated, rushed, or even a little silly, but somehow, quietly, I found myself trying to get to know you, or rather, <em>you inevitably found your way into my mind</em>.",
+            "It's kind of crazy because I literally started writing down the little things you liked. Tiny details about you that, honestly, I don't even know about myself. The little things I found <strong><em>beautiful</em></strong>, like someone <em>pressing <strong>flowers</strong></em> between the pages of a book without really knowing why.",
+            "Then I found out about your relationship, and that's when I understood <strong>the place I was supposed to take</strong>.",
+            "Out of respect, out of maturity, and because you genuinely mattered to me, I chose to care about you only as a friend. And honestly, I never minded doing that, because I like you in such a <em>sincere and genuine way</em> that I think I'd want to know you even in another lifetime.",
+            "You're one of those people whose presence feels <em>peaceful</em>, like staying up late talking about the most ridiculous things, yet somehow feeling like time slipped away far too quickly.",
+            "Maybe that's why it's so <strong>difficult</strong> to tell you this now.",
+            'Because I know the hearts that find their way to yours have always looked a little more like the <strong>-<em>Moon</em>-</strong> than the <strong>-<em>Sun</em>-</strong>; more <strong>"her"</strong> than <strong>"him."</strong> And believe me... <strong>I understand that</strong>.',
+            "I don't want this to become something uncomfortable or something that puts any pressure on you. I would hate to lose the closeness we've built because of a feeling that simply chose <strong>the worst</strong> possible moment to exist.",
+            "But I'd be lying if I said that the strange, beautiful feeling in my chest didn't come back, the one that quietly wishes to have you close <em>in a different way</em>.",
+            "Not because I expect anything from you, but because with you came this gentle curiosity to know you <strong>more</strong>.",
+            "<em>To know</em> how you think when no one is listening. What songs you play on repeat when you're <strong>sad</strong>. The little things that make you <strong>smile</strong>. How many freckles you have. Or even count your eyelashes without ever getting tired, even if there were a <em>thousand</em> of them, as strange as that sounds.",
+            "It's <strong>your eyes</strong> that are responsible for all that curiosity.",
+            "As cliché as it sounds, or even if you've heard it a thousand times before, they're simply <em>too beautiful to exist so casually</em>. They feel like the kind of detail an author would place inside a fantasy novel just to make sure <strong>no one</strong> could ever forget them.",
+            "And honestly... that's <em>exactly</em> the kind of book I'd read if your eyes were painted on its cover.",
+            "But I also want you to know something <strong>important</strong>:",
+            "I don't expect you to feel the same.",
+            "<strong>Truly.</strong>",
+            "As much as my heart wishes you would.",
+            "If it isn't mutual, if you simply can't see me that way, or if your heart is looking somewhere else, <em>that's okay</em>.",
+            "I'm not going to make you uncomfortable, insist, or turn our friendship into something awkward. Because before any romantic possibility, what matters to me is still having you in my life... As a <strong>person</strong>, as a <strong>thought</strong>, and as a <strong>soul</strong> in this world where, among billions of people and countless stars, <strong>somehow we found each other</strong>.",
+            "And if there simply isn't any romantic feeling... then I'd love for us to stay friends.",
+            "<strong>Good friends.</strong>",
+            '"Moito" good friends hshsh',
+            "I just wanted to be honest with you because staying silent felt, in a way, like I was deceiving you... and deceiving myself too.",
+            "So... I guess I'd also like to know your answer.",
+            "Not now.",
+            "Maybe not even tomorrow.",
+            "<em>Take your time. <strong>Really.</strong></em>",
+            "By the time you read this, I probably won't be there anymore, and honestly, there's a very high chance I'll be so nervous waiting for your reply that I won't even know how to answer myself.",
+            "But I still wanted to tell you.",
+            "Because <strong><em>I like you</em></strong> enough to write these words <strong>in permanent ink</strong> instead of pencil.",
+            "I didn't want this to feel like something easy to <strong>erase</strong>, something <strong>temporary</strong>, or an emotion written <strong>out of fear.</strong>",
+            "I think some people come into our lives and, deep down, we simply know <em>they deserve to be <strong>written in ink</strong></em>."
+        ];
+
+        const shortLines = [
+            "Truly.", "Not now.", "Maybe not even tomorrow.",
+            "Take your time. Really.", "Good friends.",
+            "But I still wanted to tell you.",
+            "But I also want you to know something important:",
+            "I don't expect you to feel the same.",
+            "As much as my heart wishes you would."
+        ];
+
+        const content = document.getElementById('content');
+        paragraphs.forEach(text => {
+            const p = document.createElement('p');
+            p.innerHTML = text;
+            if (shortLines.includes(text)) p.classList.add('short-line');
+            content.appendChild(p);
+        });
+
+        // ================================================================
+        // 3. ELEMENTOS
+        // ================================================================
+        const intro = document.getElementById('intro');
+        const seal = document.getElementById('seal');
+        const envelope = document.getElementById('envelope');
+        const hint = document.getElementById('hint');
+        const btnRead = document.getElementById('btn-read');
+        const letter = document.getElementById('letter');
+        const letterContent = document.getElementById('content');
+        const btnEnd = document.getElementById('btn-end');
+        const finalOverlay = document.getElementById('final');
+        const btnBack = document.getElementById('btn-back');
+        const music = document.getElementById('music');
+
+        let opened = false;
+        let isEndingShown = false;
+
+        // ================================================================
+        // 4. SONIDO RELAJANTE
+        // ================================================================
+        function playSoftSound() {
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                const ctx = new AudioCtx();
+                
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(659, ctx.currentTime + 0.15);
+                osc.frequency.exponentialRampToValueAtTime(784, ctx.currentTime + 0.3);
+                
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(ctx.currentTime);
+                osc.stop(ctx.currentTime + 0.5);
+            } catch (e) {}
+        }
+
+        // ================================================================
+        // 5. MÚSICA
+        // ================================================================
+        function fadeInMusic() {
+            music.volume = 0;
+            music.play().catch(() => {});
+            let vol = 0;
+            const interval = setInterval(() => {
+                vol += 0.03;
+                if (vol >= 0.1) { vol = 0.1; clearInterval(interval); }
+                music.volume = vol;
+            }, 100);
+        }
+
+        function fadeOutMusic(duration = 2500) {
+            const steps = 30;
+            const startVol = music.volume;
+            let step = 0;
+            const interval = setInterval(() => {
+                step++;
+                music.volume = Math.max(0, startVol * (1 - step / steps));
+                if (step >= steps) { clearInterval(interval); music.pause(); }
+            }, duration / steps);
+        }
+
+        // ================================================================
+        // 6. ROMPER SELLO
+        // ================================================================
+        seal.addEventListener('click', function() {
+            if (opened) return;
+            opened = true;
+
+            hint.classList.add('hidden');
+            seal.classList.add('seal-broken');
+            playSoftSound();
+
+            setTimeout(() => {
+                envelope.classList.add('open');
+            }, 400);
+
+            fadeInMusic();
+
+            setTimeout(() => {
+                btnRead.classList.add('show');
+            }, 1400);
+        });
+
+        // ================================================================
+        // 7. MOSTRAR CARTA
+        // ================================================================
+        btnRead.addEventListener('click', function() {
+            intro.classList.add('hidden');
+            letter.classList.add('show');
+            
+            setTimeout(() => {
+                letter.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 200);
+
+            const allP = letterContent.querySelectorAll('p');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                        if (entry.target === allP[allP.length - 1]) {
+                            setTimeout(() => {
+                                btnEnd.classList.add('show');
+                            }, 800);
+                        }
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            allP.forEach(p => observer.observe(p));
+        }, { once: true });
+
+        // ================================================================
+        // 8. FINAL
+        // ================================================================
+        btnEnd.addEventListener('click', function() {
+            if (isEndingShown) return;
+            isEndingShown = true;
+            
+            btnEnd.classList.remove('show');
+            letterContent.classList.add('faded');
+
+            setTimeout(() => {
+                finalOverlay.classList.add('show');
+                setTimeout(() => {
+                    btnBack.classList.add('show');
+                }, 1200);
+            }, 1600);
+        });
+
+        btnBack.addEventListener('click', function() {
+            finalOverlay.classList.remove('show');
+            letterContent.classList.remove('faded');
+            btnBack.classList.remove('show');
+            fadeOutMusic(2000);
+            
+            isEndingShown = false;
+            
+            setTimeout(() => {
+                btnEnd.classList.add('show');
+            }, 500);
+            
+            letter.scrollIntoView({ behavior: 'smooth' });
+            document.querySelectorAll('.letter-content p').forEach(p => {
+                p.classList.add('show');
+            });
+        });
+
+        // ================================================================
+        // 9. INICIALIZAR
+        // ================================================================
+        btnEnd.classList.remove('show');
+        btnBack.classList.remove('show');
+
+        console.log('💌 Letter ready!');
+    </script>
+</body>
+</html>
