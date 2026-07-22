@@ -2,22 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dear Mimi ₍⑅ᐢ..ᐢ₎</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Tangerine:wght@400;700&family=Alex+Brush&display=swap" rel="stylesheet">
     <style>
+        /* ===== FORZAR COLORES PARA MODO OSCURO ===== */
+        html {
+            color-scheme: light !important;
+            background: #08070a !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent !important;
         }
 
         body {
-            background: #08070a;
-            color: #3a2a17;
+            background: #08070a !important;
+            color: #3a2a17 !important;
             font-family: 'EB Garamond', serif;
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-text-fill-color: #3a2a17 !important;
+            touch-action: manipulation;
+        }
+
+        /* Forzar que los elementos mantengan sus colores */
+        div, section, article, main, header, footer, p, h1, h2, h3, h4, h5, h6, span, a, button, input, textarea {
+            color-scheme: light !important;
         }
 
         /* === PARTÍCULAS === */
@@ -41,7 +55,8 @@
             align-items: center;
             justify-content: center;
             background: radial-gradient(ellipse at 50% 60%, rgba(255, 181, 77, 0.08), transparent 60%),
-                        linear-gradient(180deg, #0f0c10, #08070a);
+                        linear-gradient(180deg, #0f0c10, #08070a) !important;
+            background-color: #08070a !important;
             z-index: 20;
             transition: opacity 1.5s ease;
         }
@@ -69,7 +84,7 @@
             width: 16px;
             height: 38px;
             border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            background: radial-gradient(circle at 50% 70%, #fff5d0, #ffb54d 40%, #b5521c 80%, transparent);
+            background: radial-gradient(circle at 50% 70%, #fff5d0, #ffb54d 40%, #b5521c 80%, transparent) !important;
             filter: drop-shadow(0 0 15px #ffb54d) drop-shadow(0 0 30px rgba(255, 181, 77, 0.3));
             animation: flicker 2.5s infinite alternate;
         }
@@ -85,14 +100,14 @@
         .wick {
             width: 2px;
             height: 8px;
-            background: #2a1e12;
+            background: #2a1e12 !important;
             margin: 0 auto;
         }
 
         .candle-body {
             width: 28px;
             height: 80px;
-            background: linear-gradient(90deg, #efe3c2, #fbf6e6 40%, #e6d7ab 70%, #d8c894);
+            background: linear-gradient(90deg, #efe3c2, #fbf6e6 40%, #e6d7ab 70%, #d8c894) !important;
             border-radius: 4px 4px 8px 8px;
             box-shadow: inset -3px 0 10px rgba(0,0,0,0.15), 0 8px 20px rgba(0,0,0,0.6);
             position: relative;
@@ -105,7 +120,7 @@
             left: 5px;
             width: 4px;
             height: 55%;
-            background: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.4) !important;
             border-radius: 2px;
             filter: blur(1px);
         }
@@ -126,6 +141,7 @@
             aspect-ratio: 3/2;
             cursor: pointer;
             transition: transform 0.6s ease;
+            touch-action: manipulation;
         }
 
         .envelope:hover {
@@ -135,8 +151,8 @@
         .envelope-back {
             position: absolute;
             inset: 0;
-            background: linear-gradient(170deg, #efe3c2, #d9c493);
-            border: 2px solid #c8a24a;
+            background: linear-gradient(170deg, #efe3c2, #d9c493) !important;
+            border: 2px solid #c8a24a !important;
             border-radius: 4px;
             box-shadow: inset 0 0 30px rgba(74, 60, 34, 0.2), 0 15px 40px rgba(0,0,0,0.6);
         }
@@ -147,7 +163,7 @@
             inset: 0;
             background: 
                 linear-gradient(135deg, transparent 47%, rgba(74,60,34,0.12) 50%, transparent 53%),
-                linear-gradient(45deg, transparent 47%, rgba(74,60,34,0.12) 50%, transparent 53%);
+                linear-gradient(45deg, transparent 47%, rgba(74,60,34,0.12) 50%, transparent 53%) !important;
         }
 
         .envelope-flap {
@@ -156,7 +172,7 @@
             left: 0;
             right: 0;
             height: 62%;
-            background: linear-gradient(160deg, #e6d7ab, #cdb87f);
+            background: linear-gradient(160deg, #e6d7ab, #cdb87f) !important;
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             border-radius: 4px 4px 0 0;
             transform-origin: top center;
@@ -168,7 +184,7 @@
             transform: rotateX(180deg);
         }
 
-        /* === SELLO === */
+        /* === SELLO - FIX PARA MÓVILES === */
         .seal {
             position: absolute;
             top: 52%;
@@ -177,19 +193,19 @@
             width: 72px;
             height: 72px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #8fd4e8, #4a0c1e 70%);
+            background: radial-gradient(circle at 30% 30%, #8fd4e8, #4a0c1e 70%) !important;
             box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 2px 8px rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 3;
+            z-index: 10;
             cursor: pointer;
             transition: transform 0.3s ease, opacity 0.5s ease;
-            border: 2px solid rgba(0,0,0,0.2);
-        }
-
-        .seal:hover {
-            transform: translate(-50%, -50%) scale(1.08);
+            border: 2px solid rgba(0,0,0,0.2) !important;
+            touch-action: manipulation;
+            /* Asegurar que el sello sea clickeable en móviles */
+            pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .seal:active {
@@ -198,6 +214,7 @@
 
         .seal-broken {
             animation: sealBreak 0.7s ease forwards;
+            pointer-events: none !important;
         }
 
         @keyframes sealBreak {
@@ -209,10 +226,11 @@
         .seal-text {
             font-family: 'Cinzel Decorative', serif;
             font-size: 20px;
-            color: rgba(255, 240, 225, 0.95);
+            color: rgba(255, 240, 225, 0.95) !important;
             text-shadow: 0 1px 3px rgba(0,0,0,0.5);
             letter-spacing: 1px;
             pointer-events: none;
+            -webkit-text-fill-color: rgba(255, 240, 225, 0.95) !important;
         }
 
         /* === HINT === */
@@ -223,9 +241,10 @@
             letter-spacing: 3px;
             text-transform: uppercase;
             font-size: 13px;
-            color: #e7cf94;
+            color: #e7cf94 !important;
             opacity: 0.7;
             animation: pulse 2.5s infinite;
+            -webkit-text-fill-color: #e7cf94 !important;
         }
 
         @keyframes pulse {
@@ -246,9 +265,9 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             font-size: 13px;
-            color: #e7cf94;
-            background: transparent;
-            border: 1.5px solid rgba(231, 207, 148, 0.5);
+            color: #e7cf94 !important;
+            background: transparent !important;
+            border: 1.5px solid rgba(231, 207, 148, 0.5) !important;
             border-radius: 50px;
             padding: 12px 35px;
             cursor: pointer;
@@ -256,6 +275,8 @@
             transform: translateY(10px);
             pointer-events: none;
             transition: opacity 0.8s ease, transform 0.8s ease;
+            -webkit-text-fill-color: #e7cf94 !important;
+            touch-action: manipulation;
         }
 
         .btn.show {
@@ -265,8 +286,8 @@
         }
 
         .btn:hover {
-            background: rgba(231, 207, 148, 0.1);
-            border-color: #e7cf94;
+            background: rgba(231, 207, 148, 0.1) !important;
+            border-color: #e7cf94 !important;
         }
 
         /* === CARTA - ESTILO VICTORIANO === */
@@ -278,7 +299,8 @@
             justify-content: center;
             padding: 80px 20px 100px;
             background: radial-gradient(ellipse at 50% 0%, rgba(255, 181, 77, 0.06), transparent 60%),
-                        linear-gradient(180deg, #0f0c10, #08070a);
+                        linear-gradient(180deg, #0f0c10, #08070a) !important;
+            background-color: #08070a !important;
         }
 
         #letter.show {
@@ -288,8 +310,8 @@
         .paper {
             position: relative;
             width: min(750px, 95vw);
-            background: linear-gradient(160deg, #f5efe0, #e8dcc8, #dccdb5);
-            border: 3px double #b8963e;
+            background: linear-gradient(160deg, #f5efe0, #e8dcc8, #dccdb5) !important;
+            border: 3px double #b8963e !important;
             border-radius: 3px;
             padding: 60px 50px 80px;
             box-shadow: 
@@ -299,6 +321,7 @@
             animation: paperRise 1.4s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
             opacity: 0;
             transform: translateY(40px);
+            background-color: #f5efe0 !important;
         }
 
         @keyframes paperRise {
@@ -314,9 +337,10 @@
             transform: translateX(-50%);
             font-size: 14px;
             letter-spacing: 8px;
-            color: #b8963e;
+            color: #b8963e !important;
             opacity: 0.4;
             font-family: 'Tangerine', cursive;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         .paper::after {
@@ -327,16 +351,17 @@
             transform: translateX(-50%);
             font-size: 14px;
             letter-spacing: 8px;
-            color: #b8963e;
+            color: #b8963e !important;
             opacity: 0.4;
             font-family: 'Tangerine', cursive;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         /* Marco decorativo interior */
         .paper .border-decoration {
             position: absolute;
             inset: 20px;
-            border: 1px solid rgba(184, 150, 62, 0.2);
+            border: 1px solid rgba(184, 150, 62, 0.2) !important;
             border-radius: 2px;
             pointer-events: none;
         }
@@ -348,10 +373,11 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 18px;
-            color: #b8963e;
+            color: #b8963e !important;
             opacity: 0.3;
-            background: #e8dcc8;
+            background: #e8dcc8 !important;
             padding: 0 10px;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         .paper .border-decoration::after {
@@ -361,10 +387,11 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 18px;
-            color: #b8963e;
+            color: #b8963e !important;
             opacity: 0.3;
-            background: #e8dcc8;
+            background: #e8dcc8 !important;
             padding: 0 10px;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         /* Esquinas decorativas */
@@ -372,8 +399,9 @@
             position: absolute;
             font-family: 'Tangerine', cursive;
             font-size: 28px;
-            color: #b8963e;
+            color: #b8963e !important;
             opacity: 0.3;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         .corner-tl { top: 12px; left: 18px; }
@@ -397,7 +425,8 @@
             font-size: clamp(26px, 5vw, 36px);
             text-align: center;
             margin-bottom: 30px;
-            color: #3a2a17;
+            color: #3a2a17 !important;
+            -webkit-text-fill-color: #3a2a17 !important;
         }
 
         .letter-content p {
@@ -408,6 +437,8 @@
             opacity: 0;
             transform: translateY(15px);
             transition: opacity 0.9s ease, transform 0.9s ease;
+            color: #3a2a17 !important;
+            -webkit-text-fill-color: #3a2a17 !important;
         }
 
         .letter-content p.show {
@@ -421,16 +452,20 @@
             float: left;
             line-height: 0.7;
             padding: 8px 10px 0 0;
-            color: #7c1330;
+            color: #7c1330 !important;
+            -webkit-text-fill-color: #7c1330 !important;
         }
 
         .letter-content em {
             font-style: italic;
+            color: #3a2a17 !important;
+            -webkit-text-fill-color: #3a2a17 !important;
         }
 
         .letter-content strong {
             font-weight: 600;
-            color: #5a2a1a;
+            color: #5a2a1a !important;
+            -webkit-text-fill-color: #5a2a1a !important;
         }
 
         /* === BOTÓN CONTINUE - ESTILO CERA === */
@@ -440,9 +475,9 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             font-size: 14px;
-            color: #f5efe0;
-            background: linear-gradient(145deg, #7c1330, #4a0c1e);
-            border: 2px solid #b8963e;
+            color: #f5efe0 !important;
+            background: linear-gradient(145deg, #7c1330, #4a0c1e) !important;
+            border: 2px solid #b8963e !important;
             border-radius: 50px;
             padding: 14px 40px;
             cursor: pointer;
@@ -453,20 +488,24 @@
             box-shadow: 0 4px 15px rgba(124, 19, 48, 0.4), inset 0 1px 0 rgba(255,255,255,0.1);
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
             position: relative;
+            -webkit-text-fill-color: #f5efe0 !important;
+            touch-action: manipulation;
         }
 
         .btn-wax::before {
             content: '◆';
             margin-right: 10px;
             font-size: 10px;
-            color: #b8963e;
+            color: #b8963e !important;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         .btn-wax::after {
             content: '◆';
             margin-left: 10px;
             font-size: 10px;
-            color: #b8963e;
+            color: #b8963e !important;
+            -webkit-text-fill-color: #b8963e !important;
         }
 
         .btn-wax.show {
@@ -503,7 +542,8 @@
             gap: 35px;
             z-index: 30;
             padding: 0 20px;
-            background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.85), #000000 95%);
+            background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.85), #000000 95%) !important;
+            background-color: #000000 !important;
             opacity: 0;
             pointer-events: none;
             transition: opacity 2s ease;
@@ -517,10 +557,11 @@
         #final p {
             font-family: 'Tangerine', cursive;
             font-size: clamp(40px, 8vw, 65px);
-            color: #f5efe0;
+            color: #f5efe0 !important;
             text-align: center;
             text-shadow: 0 0 40px rgba(255, 181, 77, 0.15);
             line-height: 1.3;
+            -webkit-text-fill-color: #f5efe0 !important;
         }
 
         #final .sub-phrase {
@@ -529,6 +570,8 @@
             display: block;
             margin-top: 10px;
             font-style: italic;
+            color: #f5efe0 !important;
+            -webkit-text-fill-color: #f5efe0 !important;
         }
 
         #final .btn-wax {
@@ -785,9 +828,11 @@
         }
 
         // ================================================================
-        // 6. ROMPER SELLO
+        // 6. ROMPER SELLO - FIX PARA MÓVILES
         // ================================================================
-        seal.addEventListener('click', function() {
+        // Usar tanto click como touchstart para máxima compatibilidad
+        function handleSealClick(e) {
+            e.preventDefault();
             if (opened) return;
             opened = true;
 
@@ -804,7 +849,14 @@
             setTimeout(() => {
                 btnRead.classList.add('show');
             }, 1400);
-        });
+        }
+
+        seal.addEventListener('click', handleSealClick);
+        seal.addEventListener('touchstart', function(e) {
+            // Prevenir que el navegador interprete esto como scroll o zoom
+            e.preventDefault();
+            handleSealClick(e);
+        }, { passive: false });
 
         // ================================================================
         // 7. MOSTRAR CARTA
