@@ -184,7 +184,7 @@
             transform: rotateX(180deg);
         }
 
-        /* === SELLO - FIX PARA MÓVILES === */
+        /* === SELLO === */
         .seal {
             position: absolute;
             top: 52%;
@@ -203,7 +203,6 @@
             transition: transform 0.3s ease, opacity 0.5s ease;
             border: 2px solid rgba(0,0,0,0.2) !important;
             touch-action: manipulation;
-            /* Asegurar que el sello sea clickeable en móviles */
             pointer-events: auto;
             -webkit-tap-highlight-color: transparent;
         }
@@ -774,6 +773,7 @@
 
         let opened = false;
         let isEndingShown = false;
+        let musicStarted = false;
 
         // ================================================================
         // 4. SONIDO RELAJANTE
@@ -803,17 +803,30 @@
         }
 
         // ================================================================
-        // 5. MÚSICA
+        // 5. MÚSICA - FIX PARA MÓVILES
         // ================================================================
-        function fadeInMusic() {
+        function startMusic() {
+            if (musicStarted) return;
+            musicStarted = true;
+            
+            // Primero intentamos reproducir con volumen 0 (requerido para móviles)
             music.volume = 0;
-            music.play().catch(() => {});
-            let vol = 0;
-            const interval = setInterval(() => {
-                vol += 0.03;
-                if (vol >= 0.2) { vol = 0.2; clearInterval(interval); }
-                music.volume = vol;
-            }, 100);
+            music.play().then(() => {
+                // Si la reproducción comenzó, hacemos el fade-in
+                let vol = 0;
+                const interval = setInterval(() => {
+                    vol += 0.02;
+                    if (vol >= 0.2) { 
+                        vol = 0.2; 
+                        clearInterval(interval); 
+                    }
+                    music.volume = vol;
+                }, 80);
+            }).catch((err) => {
+                console.log('Audio autoplay blocked, waiting for user interaction');
+                // Si falla, reintentamos en el próximo clic
+                musicStarted = false;
+            });
         }
 
         function fadeOutMusic(duration = 2500) {
@@ -823,14 +836,17 @@
             const interval = setInterval(() => {
                 step++;
                 music.volume = Math.max(0, startVol * (1 - step / steps));
-                if (step >= steps) { clearInterval(interval); music.pause(); }
+                if (step >= steps) { 
+                    clearInterval(interval); 
+                    music.pause();
+                    musicStarted = false;
+                }
             }, duration / steps);
         }
 
         // ================================================================
-        // 6. ROMPER SELLO - FIX PARA MÓVILES
+        // 6. ROMPER SELLO - CON MÚSICA
         // ================================================================
-        // Usar tanto click como touchstart para máxima compatibilidad
         function handleSealClick(e) {
             e.preventDefault();
             if (opened) return;
@@ -840,11 +856,12 @@
             seal.classList.add('seal-broken');
             playSoftSound();
 
+            // INICIAR MÚSICA INMEDIATAMENTE DESPUÉS DEL CLIC
+            startMusic();
+
             setTimeout(() => {
                 envelope.classList.add('open');
             }, 400);
-
-            fadeInMusic();
 
             setTimeout(() => {
                 btnRead.classList.add('show');
@@ -853,7 +870,6 @@
 
         seal.addEventListener('click', handleSealClick);
         seal.addEventListener('touchstart', function(e) {
-            // Prevenir que el navegador interprete esto como scroll o zoom
             e.preventDefault();
             handleSealClick(e);
         }, { passive: false });
